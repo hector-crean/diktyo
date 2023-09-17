@@ -4,7 +4,7 @@ use axum::{extract::State, response::Json};
 use bibe_models::bike::Bike;
 use uuid::Uuid;
 
-use super::post::UpdateBikeStatus;
+
 
 pub struct GetBike {
     pub bike_id: Uuid,

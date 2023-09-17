@@ -1,4 +1,4 @@
-use crate::{errors::authentication::SignupError, services::DatabaseError, AppState};
+use crate::{services::DatabaseError, AppState};
 use bibe_models::user::User;
 
 use axum::{extract::State, response::Json};

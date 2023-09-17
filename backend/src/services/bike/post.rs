@@ -1,13 +1,9 @@
 use crate::{
-    authentication::{new_session, SessionToken},
-    errors::authentication::SignupError,
-    services::bike::get::get_bike,
     AppState,
 };
 use bibe_models::{
     bike::{Bike, BikeStatus},
     message::BibeMsg,
-    user::Role,
 };
 use http::StatusCode;
 use sqlx::Executor;
@@ -16,15 +12,9 @@ use axum::{
     extract::State,
     response::{IntoResponse, Json, Response},
 };
-use pbkdf2::{
-    password_hash::{PasswordHasher, SaltString},
-    Pbkdf2,
-};
-use rand::{
-    distributions::{Alphanumeric, Distribution, Standard},
-    prelude::*,
-};
-use rand_core::OsRng;
+
+
+
 use serde::{Deserialize, Serialize};
 use tokio::sync::broadcast::error::SendError;
 use uuid::Uuid;
@@ -47,9 +37,7 @@ pub enum UpdateBikeStatusError {
 
 impl IntoResponse for UpdateBikeStatusError {
     fn into_response(self) -> Response {
-        match self {
-            _ => (StatusCode::INTERNAL_SERVER_ERROR, "").into_response(),
-        }
+        (StatusCode::INTERNAL_SERVER_ERROR, "").into_response()
     }
 }
 

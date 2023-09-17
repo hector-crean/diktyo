@@ -1,36 +1,30 @@
 use axum::{
     extract::{
-        ws::{CloseFrame, Message, WebSocket, WebSocketUpgrade},
-        ConnectInfo, Path, State,
+        ws::{Message, WebSocket, WebSocketUpgrade},
+        ConnectInfo, State,
     },
     headers::UserAgent,
-    response::{Html, IntoResponse},
-    routing::get,
-    Json, Router, TypedHeader,
+    response::{IntoResponse}, TypedHeader,
 };
 
-use serde::{Deserialize, Serialize};
+
 use serde_json::json;
-use sqlx::{Pool, Postgres};
+
 use std::{
-    borrow::Cow,
-    collections::HashSet,
     net::SocketAddr,
     ops::ControlFlow,
-    sync::{Arc, Mutex},
     time::Duration,
 };
-use tokio::sync::broadcast;
-use tower_http::trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer};
-use uuid::Uuid;
+
+
+
 //allows to split the websocket stream into separate TX and RX branches
 use futures::{sink::SinkExt, stream::StreamExt};
 
-use tracing::Level;
+
 
 use crate::AppState;
 use bibe_models::{
-    bike::{Bike, BikeStatus},
     message::BibeMsg,
 };
 
