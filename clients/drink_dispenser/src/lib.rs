@@ -1,7 +1,7 @@
 pub mod fsm;
 pub mod gpio;
 
-use bibe_models::command::Messages;
+use bibe_models::message::Messages;
 use futures_util::stream::FuturesUnordered;
 use futures_util::{SinkExt, StreamExt};
 use std::borrow::Cow;
