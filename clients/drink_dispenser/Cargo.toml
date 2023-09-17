@@ -1,0 +1,39 @@
+[package]
+name = "bibe_drink_dispenser"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[features]
+static_ssl = ['openssl/vendored']
+vendored-openssl = ["openssl/vendored"]
+
+[dependencies]
+bibe_models = { path = "../../crates/bibe_models"}
+
+tokio = { version = "1.25", features = ["full"] }
+axum ={version="0.6.20", features=["ws", "headers", "tokio"]}
+futures = "0.3"
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+axum-macros = "0.3.7"
+tower-http = { version = "0.4.0", features = ["cors", "trace"] } # added
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1.1.2", features = ["serde"] }
+thiserror = "1.0.38"
+color-eyre = "0.6.2"
+chrono = { version = "0.4.24", features = ["serde"] }
+dotenv = "0.15.0"
+serde = { version = "1.0.150", features = ["derive"] }
+serde_json = "1.0.89"
+tokio-tungstenite = "0.20"
+openssl = { version = "0.10", features = ["vendored"],  optional = true }
+rppal = { version = "0.14.1"}
+
+
+[dev-dependencies]
+hyper = { version = "0.14.17", features = ["full"] }
+tower = { version = "0.4.13", features = ["util"] }
+cross = "0.2.1"
