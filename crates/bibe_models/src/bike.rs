@@ -20,3 +20,13 @@ pub enum BikeStatus {
     #[strum(serialize = "Unknown")]
     Unknown,
 }
+
+pub struct GetBike {
+    pub bike_id: Uuid,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct UpdateBikeStatus {
+    pub bike_id: Uuid,
+    pub status: BikeStatus,
+}

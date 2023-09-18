@@ -828,7 +828,6 @@ dependencies = [
  "futures-util",
  "hyper",
  "openssl",
- "rppal",
  "serde",
  "serde_json",
  "thiserror",
@@ -848,6 +847,9 @@ dependencies = [
  "chrono",
  "geo",
  "geo-types",
+ "rand",
+ "rand_chacha",
+ "rand_core",
  "serde",
  "serde_json",
  "sqlx",
@@ -1222,6 +1224,23 @@ checksum = "f2696e8a945f658fd14dc3b87242e6b80cd0f36ff04ea560fa39082368847946"
 [[package]]
 name = "desktop"
 version = "0.1.0"
+dependencies = [
+ "bibe_models",
+ "chrono",
+ "color-eyre",
+ "dotenv",
+ "geo",
+ "geo-types",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "strum",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
+]
 
 [[package]]
 name = "digest"
@@ -2718,15 +2737,6 @@ name = "robust"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cbf4a6aa5f6d6888f39e980649f3ad6b666acdce1d78e95b8a2cb076e687ae30"
-
-[[package]]
-name = "rppal"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "612e1a22e21f08a246657c6433fe52b773ae43d07c9ef88ccfc433cc8683caba"
-dependencies = [
- "libc",
-]
 
 [[package]]
 name = "rsa"

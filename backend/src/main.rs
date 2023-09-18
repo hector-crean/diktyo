@@ -79,10 +79,8 @@ mod tests {
 
     use bibe_models::user::User;
 
-    use ribasome_server::services::{
-        s3::S3Bucket,
-        user::post::{CreateUser, CreateUserResponse},
-    };
+    use bibe_models::user::{CreateUser, CreateUserResponse};
+    use ribasome_server::services::s3::S3Bucket;
     use serde_json::json;
     use std::net::SocketAddr;
 

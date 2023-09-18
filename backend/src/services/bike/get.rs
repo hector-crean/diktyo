@@ -1,14 +1,8 @@
 use crate::AppState;
 
 use axum::{extract::State, response::Json};
-use bibe_models::bike::Bike;
+use bibe_models::bike::{Bike, GetBike};
 use uuid::Uuid;
-
-
-
-pub struct GetBike {
-    pub bike_id: Uuid,
-}
 
 pub async fn get_bike(
     State(state): State<AppState>,

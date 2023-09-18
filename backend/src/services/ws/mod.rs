@@ -4,29 +4,19 @@ use axum::{
         ConnectInfo, State,
     },
     headers::UserAgent,
-    response::{IntoResponse}, TypedHeader,
+    response::IntoResponse,
+    TypedHeader,
 };
-
 
 use serde_json::json;
 
-use std::{
-    net::SocketAddr,
-    ops::ControlFlow,
-    time::Duration,
-};
-
-
+use std::{net::SocketAddr, ops::ControlFlow, time::Duration};
 
 //allows to split the websocket stream into separate TX and RX branches
 use futures::{sink::SinkExt, stream::StreamExt};
 
-
-
 use crate::AppState;
-use bibe_models::{
-    message::BibeMsg,
-};
+use bibe_models::message::BibeMsg;
 
 pub async fn ws_handler(
     state: State<AppState>,
@@ -84,7 +74,7 @@ async fn websocket(State(state): State<AppState>, mut socket: WebSocket, who: So
     let mut rx = state.tx.subscribe();
 
     // Now send the "joined" message to all subscribers.
-    let join_msg = BibeMsg::SwitchOffline {
+    let join_msg = BibeMsg::SwitchOnline {
         socket_address: who,
     };
     tracing::debug!("{:?}", join_msg);

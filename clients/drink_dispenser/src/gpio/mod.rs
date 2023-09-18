@@ -1,36 +1,60 @@
 use crate::fsm::drink_dispenser::{DrinkDispenser, DrinkDispenserEvent};
-use rppal::gpio::{self, Gpio, OutputPin};
+
+// use rppal::gpio::{self, Gpio, OutputPin};
 use std::sync::{Arc, Mutex};
 
-pub trait GpioController {
-    fn turn_on_pin(&self, pin_id: u8) -> Result<(), gpio::Error>;
-    fn turn_off_pin(&self, pin_id: u8) -> Result<(), gpio::Error>;
+#[derive(thiserror::Error, Debug)]
+pub enum GpioControllerError {}
+
+pub trait GpioController: Sized {
+    type T;
+    fn new() -> Result<Self, GpioControllerError>;
+    fn turn_on_pin(&self, pin_id: u8) -> Result<Self::T, GpioControllerError>;
+    fn turn_off_pin(&self, pin_id: u8) -> Result<Self::T, GpioControllerError>;
 }
 
-#[derive(Clone)]
-pub struct RppalGpioController {
-    gpio: Gpio,
-}
+pub struct MockGpioController;
 
-impl RppalGpioController {
-    pub fn new() -> Result<Self, gpio::Error> {
-        let gpio = Gpio::new()?;
+impl GpioController for MockGpioController {
+    type T = ();
 
-        Ok(Self { gpio })
+    fn new() -> Result<Self, GpioControllerError> {
+        Ok(MockGpioController)
     }
-}
-impl GpioController for RppalGpioController {
-    fn turn_on_pin(&self, pin_id: u8) -> Result<(), gpio::Error> {
-        let mut pump_pin = self.gpio.get(pin_id)?.into_output();
-
-        pump_pin.set_high();
+    fn turn_on_pin(&self, pin_id: u8) -> Result<Self::T, GpioControllerError> {
         Ok(())
     }
-
-    fn turn_off_pin(&self, pin_id: u8) -> Result<(), gpio::Error> {
-        let mut pump_pin = self.gpio.get(pin_id)?.into_output();
-
-        pump_pin.set_low();
+    fn turn_off_pin(&self, pin_id: u8) -> Result<Self::T, GpioControllerError> {
         Ok(())
     }
 }
+
+// #[derive(Clone)]
+// pub struct RppalGpioController {
+//     gpio: Gpio,
+// }
+
+// impl RppalGpioController {
+//     pub fn new() -> Result<Self, gpio::Error> {
+//         let gpio = Gpio::new()?;
+
+//         Ok(Self { gpio })
+//     }
+// }
+// impl GpioController for RppalGpioController {
+//     type E = gpio::Error;
+//     type T = ();
+//     fn turn_on_pin(&self, pin_id: u8) -> Result<Self::T, Self::E> {
+//         let mut pump_pin = self.gpio.get(pin_id)?.into_output();
+
+//         pump_pin.set_high();
+//         Ok(())
+//     }
+
+//     fn turn_off_pin(&self, pin_id: u8) -> Result<Self::T, Self::E> {
+//         let mut pump_pin = self.gpio.get(pin_id)?.into_output();
+
+//         pump_pin.set_low();
+//         Ok(())
+//     }
+// }

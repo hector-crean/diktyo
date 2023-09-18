@@ -1,7 +1,7 @@
 pub mod fsm;
 pub mod gpio;
 
-use bibe_models::message::Messages;
+use bibe_models::message::BibeMsg;
 use futures_util::stream::FuturesUnordered;
 use futures_util::{SinkExt, StreamExt};
 use std::borrow::Cow;
@@ -15,8 +15,8 @@ use tokio_tungstenite::{
     tungstenite::protocol::CloseFrame, tungstenite::Message,
 };
 
-async fn spawn_client(who: usize) {
-    let ws_stream = match connect_async(SERVER).await {
+pub async fn spawn_client(ws_endpoint: &str, who: usize) {
+    let ws_stream = match connect_async(ws_endpoint).await {
         Ok((stream, response)) => {
             println!("Handshake for client {} has been completed", who);
             // This will be the HTTP response, same as with server this is the last moment we

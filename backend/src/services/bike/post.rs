@@ -1,6 +1,4 @@
-use crate::{
-    AppState,
-};
+use crate::AppState;
 use bibe_models::{
     bike::{Bike, BikeStatus},
     message::BibeMsg,
@@ -13,17 +11,10 @@ use axum::{
     response::{IntoResponse, Json, Response},
 };
 
-
-
+use bibe_models::bike::UpdateBikeStatus;
 use serde::{Deserialize, Serialize};
 use tokio::sync::broadcast::error::SendError;
 use uuid::Uuid;
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct UpdateBikeStatus {
-    pub bike_id: Uuid,
-    pub status: BikeStatus,
-}
 
 // utils
 

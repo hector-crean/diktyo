@@ -1,18 +1,16 @@
-use crate::gpio::{GpioController, RppalGpioController};
-use log::{info, warn};
-use rppal::gpio::OutputPin;
+use crate::gpio::{GpioController, GpioControllerError, MockGpioController};
+// use rppal::gpio::OutputPin;
 use std::clone::Clone;
-use strum::AsRefStr;
 
 #[derive(Debug, thiserror::Error)]
 pub enum DrinkDispenserError {
     #[error("Unexpected pin error")]
     PinError,
     #[error(transparent)]
-    GpioError(#[from] rppal::gpio::Error),
+    GpioError(#[from] GpioControllerError),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, AsRefStr)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum DrinkDispenserEvent {
     TurnOn,
     TurnOff,
@@ -24,13 +22,13 @@ pub enum DrinkDispenserEvent {
     TurnOffGpioPin { gpio_pin: u8 },
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, AsRefStr)]
-enum OutOfOrder {
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum OutOfOrder {
     RestockRequired,
     HardwareFault,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, AsRefStr)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum DrinkDispenserState {
     OutOfOrder(OutOfOrder),
     Idle,
@@ -40,14 +38,15 @@ pub enum DrinkDispenserState {
 #[derive(Debug, PartialEq)]
 pub struct DrinkDispenserOutput;
 
-struct GpioPinMap {
-    drink_dispender: u32,
+#[derive(Debug, Clone, Copy)]
+pub struct GpioPinMap {
+    drink_dispenser: u8,
 }
 
 impl Default for GpioPinMap {
     fn default() -> Self {
         Self {
-            drink_dispender: 17,
+            drink_dispenser: 17,
         }
     }
 }
@@ -55,7 +54,7 @@ impl Default for GpioPinMap {
 #[derive(Debug, Clone)]
 pub struct DrinkDispenser<T: GpioController + Clone> {
     pub state: DrinkDispenserState,
-    pub gpio_pin_map: Settings,
+    pub gpio_pin_map: GpioPinMap,
     gpio_controller: T,
 }
 
@@ -70,24 +69,16 @@ impl<T: GpioController + Clone> DrinkDispenser<T> {
 
     pub fn set_state(mut self, state: DrinkDispenserState) -> Self {
         self.state = state;
-        state
-    }
-
-    fn select_drink(&mut self, _drink: String) -> Result<DrinkDispenserState, DrinkDispenserError> {
-        // self.gpio_controller.turn_on_pin(gpio_pinp)?;
-        // self.send(DrinkDispenserEvent::DrinkSelected)?;
-        Ok(())
+        self
     }
 
     fn start_dispensing(&mut self, gpio_pin: u8) -> Result<(), DrinkDispenserError> {
         self.gpio_controller.turn_on_pin(gpio_pin)?;
-        info!("Started dispensing on GPIO pin: {}", gpio_pin);
         // self.send(DrinkDispenserEvent::StartDrinkDispensing { gpio_pin })?;
         Ok(())
     }
     fn stop_dispending(&mut self, gpio_pin: u8) -> Result<(), DrinkDispenserError> {
         self.gpio_controller.turn_off_pin(gpio_pin)?;
-        info!("Stopped dispensing on GPIO pin: {}", gpio_pin);
 
         // self.send(DrinkDispenserEvent::StopDrinkDispensing { gpio_pin })?;
         Ok(())
@@ -96,17 +87,15 @@ impl<T: GpioController + Clone> DrinkDispenser<T> {
     pub fn handle_event(
         &mut self,
         event: DrinkDispenserEvent,
-    ) -> Result<Self, DrinkDispenserError> {
+    ) -> Result<DrinkDispenserState, DrinkDispenserError> {
         use DrinkDispenserEvent::*;
         use DrinkDispenserState::*;
-
-        info!("Received event: {:?}", event);
 
         let state = match (self.state, event) {
             (_, DrinkDispenserEvent::TurnOn) => DrinkDispenserState::Idle,
             (_, DrinkDispenserEvent::TurnOff) => DrinkDispenserState::Idle,
             (Idle, StartDrinkDispensing) => {
-                self.start_dispensing(gpio_pin)?;
+                self.start_dispensing(self.gpio_pin_map.drink_dispenser)?;
                 DrinkDispenserState::DispensingDrink
             }
             (DispensingDrink, StartDrinkDispensing) => {

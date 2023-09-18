@@ -9,7 +9,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use bibe_models::message::BibeMsg;
+use bibe_models::{message::BibeMsg, random::Random};
 use http::Method;
 use rand_chacha::ChaCha8Rng;
 use services::{
@@ -25,8 +25,6 @@ use tower_http::{
     trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer},
 };
 use tracing::Level;
-
-pub type Random = Arc<Mutex<ChaCha8Rng>>;
 
 const USER_COOKIE_NAME: &str = "user_token";
 const COOKIE_MAX_AGE: &str = "9999999";

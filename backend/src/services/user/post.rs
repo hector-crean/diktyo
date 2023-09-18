@@ -1,39 +1,20 @@
-use crate::{
-    authentication::{new_session, SessionToken},
-    errors::authentication::SignupError,
-    AppState,
+use crate::{authentication::new_session, errors::authentication::SignupError, AppState};
+use bibe_models::{
+    session_token::SessionToken,
+    user::{CreateUser, CreateUserResponse, Role},
 };
-use bibe_models::user::Role;
 
 use axum::{extract::State, response::Json};
 use pbkdf2::{
     password_hash::{PasswordHasher, SaltString},
     Pbkdf2,
 };
-use rand::{
-    distributions::{Alphanumeric, Distribution, Standard},
-    prelude::*,
-};
+use rand::prelude::*;
 use rand_core::OsRng;
-use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct CreateUser {
-    pub username: String,
-    pub email: String,
-    pub password: String,
-    pub role: Role,
-}
 
 #[derive(sqlx::FromRow)]
 struct UserRow {
-    pub user_id: Uuid,
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize, sqlx::FromRow)]
-pub struct CreateUserResponse {
-    pub session_token: SessionToken,
     pub user_id: Uuid,
 }
 
@@ -78,31 +59,3 @@ pub async fn create_user(
 }
 
 // utils
-impl Distribution<CreateUser> for Standard {
-    fn sample<R: Rng + ?Sized>(&self, mut rng: &mut R) -> CreateUser {
-        let username = (&mut rng)
-            .sample_iter(&Alphanumeric)
-            .take(8)
-            .map(char::from)
-            .collect::<String>();
-
-        let email_radix = (&mut rng)
-            .sample_iter(&Alphanumeric)
-            .take(8)
-            .map(char::from)
-            .collect::<String>();
-
-        let password = (&mut rng)
-            .sample_iter(&Alphanumeric)
-            .take(12)
-            .map(char::from)
-            .collect::<String>();
-
-        CreateUser {
-            username,
-            email: format!("{}@r42.com", email_radix),
-            password,
-            role: Role::User,
-        }
-    }
-}
