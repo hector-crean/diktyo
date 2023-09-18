@@ -1,7 +1,6 @@
 use crate::{authentication::new_session, errors::authentication::SignupError, AppState};
 use bibe_models::{
-    session_token::SessionToken,
-    user::{CreateUser, CreateUserResponse, Role},
+    user::{CreateUser, CreateUserResponse},
 };
 
 use axum::{extract::State, response::Json};
@@ -9,7 +8,7 @@ use pbkdf2::{
     password_hash::{PasswordHasher, SaltString},
     Pbkdf2,
 };
-use rand::prelude::*;
+
 use rand_core::OsRng;
 use uuid::Uuid;
 

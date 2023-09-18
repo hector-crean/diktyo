@@ -1,7 +1,7 @@
-use crate::fsm::drink_dispenser::{DrinkDispenser, DrinkDispenserEvent};
+
 
 // use rppal::gpio::{self, Gpio, OutputPin};
-use std::sync::{Arc, Mutex};
+
 
 #[derive(thiserror::Error, Debug)]
 pub enum GpioControllerError {}
@@ -21,10 +21,10 @@ impl GpioController for MockGpioController {
     fn new() -> Result<Self, GpioControllerError> {
         Ok(MockGpioController)
     }
-    fn turn_on_pin(&self, pin_id: u8) -> Result<Self::T, GpioControllerError> {
+    fn turn_on_pin(&self, _pin_id: u8) -> Result<Self::T, GpioControllerError> {
         Ok(())
     }
-    fn turn_off_pin(&self, pin_id: u8) -> Result<Self::T, GpioControllerError> {
+    fn turn_off_pin(&self, _pin_id: u8) -> Result<Self::T, GpioControllerError> {
         Ok(())
     }
 }

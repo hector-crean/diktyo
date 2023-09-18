@@ -22,10 +22,17 @@ create table if not exists session (
 );
 
 
+create type bike_status as enum (
+    'available',
+    'rented',
+    'under_maintenance'
+);
+
+
 -- Bike
 create table "bike" (
     bike_id uuid primary key not null default (uuid_generate_v4()),
-    status varchar(50) not null default 'available', -- Possible statuses: available, rented, maintenance, etc.
+    status bike_status not null default 'available', 
     -- location geometry(Point, 4326), -- Storing the current location of the bike using PostGIS extension for spatial data
     last_maintenance_date date,
     updated_at timestamp with time zone default now()

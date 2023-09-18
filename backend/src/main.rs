@@ -1,7 +1,7 @@
 use aws_sdk_s3::config::{Credentials, Region};
+use bibe_server::services::s3::S3Bucket;
+use bibe_server::{errors, AppState};
 use dotenv::dotenv;
-use ribasome_server::services::s3::S3Bucket;
-use ribasome_server::{errors, AppState};
 use sqlx::postgres::PgPoolOptions;
 use std::convert::From;
 use tokio::sync::broadcast;
@@ -80,7 +80,7 @@ mod tests {
     use bibe_models::user::User;
 
     use bibe_models::user::{CreateUser, CreateUserResponse};
-    use ribasome_server::services::s3::S3Bucket;
+    use bibe_server::services::s3::S3Bucket;
     use serde_json::json;
     use std::net::SocketAddr;
 
@@ -149,7 +149,7 @@ mod tests {
 
         let CreateUserResponse {
             session_token: _,
-            user_id,
+            user_id: _,
         } = client
             .post(format!("http://{}/v1/api/users", addr))
             .json(&json!(user))

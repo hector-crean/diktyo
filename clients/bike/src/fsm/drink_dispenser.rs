@@ -1,4 +1,4 @@
-use crate::gpio::{GpioController, GpioControllerError, MockGpioController};
+use crate::gpio::{GpioController, GpioControllerError};
 // use rppal::gpio::OutputPin;
 use std::clone::Clone;
 

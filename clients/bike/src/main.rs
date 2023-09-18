@@ -1,4 +1,4 @@
-use bibe_drink_dispenser::spawn_client;
+use bibe_bike::spawn_client;
 use tokio::task::JoinError;
 
 const CLIENT_ID: usize = 1;

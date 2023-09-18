@@ -74,7 +74,7 @@ async fn websocket(State(state): State<AppState>, mut socket: WebSocket, who: So
     let mut rx = state.tx.subscribe();
 
     // Now send the "joined" message to all subscribers.
-    let join_msg = BibeMsg::SwitchOnline {
+    let join_msg = BibeMsg::SwitchBikeOnline {
         socket_address: who,
     };
     tracing::debug!("{:?}", join_msg);
@@ -192,7 +192,7 @@ async fn websocket(State(state): State<AppState>, mut socket: WebSocket, who: So
     }
 
     // Send "user left" message (similar to "joined" above).
-    let exit_msg = BibeMsg::SwitchOffline {
+    let exit_msg = BibeMsg::SwitchBikeOffline {
         socket_address: who,
     };
     tracing::debug!("{:?}", exit_msg);

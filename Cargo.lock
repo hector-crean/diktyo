@@ -814,7 +814,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 
 [[package]]
-name = "bibe_drink_dispenser"
+name = "bibe_bike"
 version = "0.1.0"
 dependencies = [
  "axum",
@@ -841,6 +841,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "bibe_desktop_client"
+version = "0.1.0"
+dependencies = [
+ "bibe_models",
+ "chrono",
+ "color-eyre",
+ "dotenv",
+ "geo",
+ "geo-types",
+ "rand",
+ "rand_core",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "strum",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
+]
+
+[[package]]
 name = "bibe_models"
 version = "0.1.0"
 dependencies = [
@@ -855,6 +878,52 @@ dependencies = [
  "sqlx",
  "strum",
  "thiserror",
+ "uuid",
+]
+
+[[package]]
+name = "bibe_server"
+version = "0.1.0"
+dependencies = [
+ "aws-config",
+ "aws-sdk-s3",
+ "aws-smithy-http 0.56.1",
+ "axum",
+ "axum-macros",
+ "bibe_models",
+ "chrono",
+ "color-eyre",
+ "config",
+ "cookie",
+ "csv",
+ "dotenv",
+ "futures",
+ "futures-util",
+ "geo",
+ "geo-types",
+ "http",
+ "hyper",
+ "lazy_static",
+ "miette",
+ "mime",
+ "pbkdf2",
+ "rand",
+ "rand_chacha",
+ "rand_core",
+ "regex",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "strum",
+ "thiserror",
+ "tokio",
+ "tokio-tungstenite",
+ "tower",
+ "tower-http",
+ "tracing",
+ "tracing-subscriber",
+ "url",
  "uuid",
 ]
 
@@ -1220,27 +1289,6 @@ name = "deranged"
 version = "0.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2696e8a945f658fd14dc3b87242e6b80cd0f36ff04ea560fa39082368847946"
-
-[[package]]
-name = "desktop"
-version = "0.1.0"
-dependencies = [
- "bibe_models",
- "chrono",
- "color-eyre",
- "dotenv",
- "geo",
- "geo-types",
- "reqwest",
- "serde",
- "serde_json",
- "strum",
- "thiserror",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "uuid",
-]
 
 [[package]]
 name = "digest"
@@ -2669,52 +2717,6 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "winreg",
-]
-
-[[package]]
-name = "ribasome_server"
-version = "0.1.0"
-dependencies = [
- "aws-config",
- "aws-sdk-s3",
- "aws-smithy-http 0.56.1",
- "axum",
- "axum-macros",
- "bibe_models",
- "chrono",
- "color-eyre",
- "config",
- "cookie",
- "csv",
- "dotenv",
- "futures",
- "futures-util",
- "geo",
- "geo-types",
- "http",
- "hyper",
- "lazy_static",
- "miette",
- "mime",
- "pbkdf2",
- "rand",
- "rand_chacha",
- "rand_core",
- "regex",
- "reqwest",
- "serde",
- "serde_json",
- "sqlx",
- "strum",
- "thiserror",
- "tokio",
- "tokio-tungstenite",
- "tower",
- "tower-http",
- "tracing",
- "tracing-subscriber",
- "url",
- "uuid",
 ]
 
 [[package]]

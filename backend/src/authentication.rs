@@ -1,9 +1,9 @@
 use crate::{Random, USER_COOKIE_NAME};
 use bibe_models::{session_token::SessionToken, user::User};
 
-use rand_core::RngCore;
+
 use sqlx::{Pool, Postgres};
-use std::str::FromStr;
+
 use uuid::Uuid;
 
 #[derive(Clone)]

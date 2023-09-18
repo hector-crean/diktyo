@@ -3,15 +3,13 @@ pub mod csv_ops;
 pub mod errors;
 pub mod services;
 
-use std::sync::{Arc, Mutex};
-
 use axum::{
     routing::{get, post},
     Router,
 };
 use bibe_models::{message::BibeMsg, random::Random};
 use http::Method;
-use rand_chacha::ChaCha8Rng;
+
 use services::{
     bike::{self},
     s3::S3Bucket,
@@ -70,7 +68,8 @@ impl AppState {
             .layer(cors_layer)
             .layer(trace_layer)
             .route("/users", post(user::post::create_user).get(get_users))
-            .route("/bike", post(bike::post::update_bike_status))
+            .route("/bike", post(bike::post::create_bike))
+            .route("/bike/:bike_id", post(bike::post::update_bike_status))
             .route("/ws", get(ws_handler))
             .with_state(self);
 

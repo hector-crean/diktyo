@@ -1,24 +1,53 @@
-use reqwest::Error;
-use serde::Deserialize;
-use tokio;
+pub mod errors;
 
-#[derive(Deserialize, Debug)]
-struct ApiResponse {
-    // Define the fields based on the API response you expect
-    example_field: String,
+use bibe_models::{
+    bike::{Bike, BikeStatus, CreateBike, UpdateBikeStatus},
+    user::{CreateUser, CreateUserResponse},
+};
+use errors::BibeDesktopClientError;
+use serde_json::json;
+
+const ENDPOINT_ROOT: &str = "127.0.0.1:1690";
+
+pub async fn create_bike() -> Result<(), BibeDesktopClientError> {
+    let client = reqwest::Client::new();
+
+    // Create a `CreateUser` instance
+    let bike: CreateBike = CreateBike {
+        status: Some(BikeStatus::UnderMaintenance),
+        last_maintenance_date: None,
+    };
+
+    let resp = client
+        .post(format!("http://{}/v1/api/bike", ENDPOINT_ROOT))
+        .json(&json!(bike))
+        .send()
+        .await?
+        .json::<Bike>()
+        .await?;
+
+    Ok(())
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Error> {
-    let url = "https://api.example.com/endpoint"; // Replace with your API endpoint
-    let response = reqwest::get(url).await?;
+pub async fn update_bike() -> Result<(), BibeDesktopClientError> {
+    let client = reqwest::Client::new();
 
-    let response_text = response.text().await?;
-    println!("Response Text: {}", response_text);
+    // Create a `CreateUser` instance
+    let update: UpdateBikeStatus = UpdateBikeStatus {
+        bike_id: uuid::uuid!("77fbaa72-d293-400b-ba57-e1203fc0a989"),
+        status: BikeStatus::Rented,
+    };
 
-    // Uncomment below lines if the API returns JSON
-    // let api_response: ApiResponse = reqwest::get(url).await?.json().await?;
-    // println!("API Response: {:?}", api_response);
+    let resp = client
+        .post(format!(
+            "http://{}/v1/api/bike/77fbaa72-d293-400b-ba57-e1203fc0a989",
+            ENDPOINT_ROOT
+        ))
+        .json(&json!(update))
+        .send()
+        .await?
+        .json::<Bike>()
+        .await?;
 
     Ok(())
 }

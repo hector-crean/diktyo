@@ -3,4 +3,10 @@
 //     Ok(())
 // }
 
-fn main() {}
+use bibe_desktop_client::{errors, update_bike};
+
+#[tokio::main]
+async fn main() -> errors::Result<()> {
+    update_bike().await?;
+    Ok(())
+}

@@ -1,5 +1,5 @@
 [package]
-name = "ribasome_server"
+name = "bibe_server"
 version = "0.1.0"
 edition = "2021"
 
@@ -67,5 +67,5 @@ tower = { version = "0.4.13", features = ["util"] }
 
 # Defining bin here to make multi stage docker build work
 [[bin]]
-name = "ws_server"
+name = "bibe_server"
 path = "src/main.rs"
