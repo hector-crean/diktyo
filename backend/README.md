@@ -1,10 +1,9 @@
-# ribasome
 
 # Overview
 
 The API is built using the [Axum](https://github.com/tokio-rs/axum) web framework and [SQLx](https://github.com/launchbadge/sqlx) for database connectivity with PostgreSQL.
 
-The API provides endpoints to create various resources like users, comments, marker3ds, and posts. The API is versioned using a version parameter in the URL path. The version number will be part of the URL path as `/:version/api`.
+The API provides endpoints to create various resources like users, bikes etc. The API is versioned using a version parameter in the URL path. The version number will be part of the URL path as `/:version/api`.
 
 The API is integrated with a **postgres** instance, and an **Amazon S3 bucket**, which enables data to be persisted. S3 stores assets; the assets' respective keys are stored in an asset table in the postgres database.
 
@@ -25,9 +24,7 @@ At current, there is a database setup on supabase, so steps [2], [3], [4] should
 The API provides the following endpoints:
 
 - **POST /:version/api/users**: Create a new user.
-- **POST /:version/api/comments**: Create a new comment.
-- **POST /:version/api/marker3ds**: Create a new marker3d.
-- **POST /:version/api/posts**: Create a new post.
+
 
 ## Testing
 
