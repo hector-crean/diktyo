@@ -1,18 +1,13 @@
 pub mod fsm;
 pub mod gpio;
 
-
-
+use bibe_models::message::BibeMsg;
 use futures_util::{SinkExt, StreamExt};
 
 use std::ops::ControlFlow;
 
-
-
 use tokio::time::{self, Duration};
-use tokio_tungstenite::{
-    connect_async, tungstenite::Message,
-};
+use tokio_tungstenite::{connect_async, tungstenite::Message};
 
 pub async fn spawn_client(ws_endpoint: &str, who: usize) {
     let ws_stream = match connect_async(ws_endpoint).await {
@@ -80,9 +75,16 @@ pub async fn spawn_client(ws_endpoint: &str, who: usize) {
 /// since we are working with the underlying tungstenite library directly without axum here).
 fn process_message(msg: Message, who: usize) -> ControlFlow<(), ()> {
     match msg {
-        Message::Text(t) => {
-            println!(">>> {} got str: {:?}", who, t);
-        }
+        Message::Text(t) => match serde_json::from_str::<BibeMsg>(&t) {
+            Ok(msg) => {
+                println!(">>> {}: {:?}", who, msg);
+            }
+            Err(e) => {
+                // Log deserialization errors to help diagnose issues
+                tracing::error!("Failed to deserialize message: {:?}. Text was: {:?}", e, t);
+            }
+        },
+
         Message::Binary(d) => {
             println!(">>> {} got {} bytes: {:?}", who, d.len(), d);
         }
