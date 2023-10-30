@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "bibe_server",
+    "clients/*",
+    "crates/*"
+]
