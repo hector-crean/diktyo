@@ -1,29 +1,31 @@
-version: '3'
-services:
-  api:
-    image: 1613842/rebibe-api
-    environment:
-      DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD}@db:5432"
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_REGION: ${AWS_REGION}
-      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-  db:
-    image: postgis/postgis:15-3.3-alpine   # Updated to use a PostGIS image
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql/data
+version: '3'  # Indicates the version of the Docker Compose file format
 
-volumes:
-  db:
-    driver: local
+services:  # Define the services that make up your app
+  api:  # Service name for your application
+    image: 1613842/rebibe-api  # Image to use for this service
+    environment:  # Environment variables for this service
+      DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD}@db:5432"  # Database connection string
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}  # AWS access key for S3 access
+      AWS_REGION: ${AWS_REGION}  # AWS region for S3 access
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}  # S3 bucket name for storing files
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    build:  # Build configuration if you want to build the image
+      context: .  # Build context, i.e., where to find the files needed for the build
+      dockerfile: Dockerfile  # The Dockerfile to use for building the image
+    ports:  # Port mapping between the host and the container
+      - "3000:3000"  # Maps port 3000 on the host to port 3000 on the container
+    depends_on:  # Specifies service dependencies
+      - db  # Indicates that the 'api' service depends on the 'db' service
+  db:  # Service name for your database
+    image: postgis/postgis:15-3.3-alpine  # Image to use for this service, in this case, a PostGIS image
+    restart: always  # Always restart this service if it stops
+    environment:  # Environment variables for this service
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Password for the PostgreSQL user
+    ports:  # Port mapping between the host and the container
+      - "5432:5432"  # Maps port 5432 on the host to port 5432 on the container
+    volumes:  # Volume configuration for persistent storage
+      - db:/var/lib/postgresql/data  # Maps a named volume 'db' to the data directory of PostgreSQL
+
+volumes:  # Defines named volumes
+  db:  # Named volume for the database data
+    driver: local  # Uses the local driver for storage
