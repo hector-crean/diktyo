@@ -2,10 +2,11 @@ version: '3'
 services:
   api:
     image: 1613842/rebibe-api
-    env_file:
-      - .env
     environment:
       DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD}@db:5432"
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_REGION: ${AWS_REGION}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,8 +16,6 @@ services:
       - db
   db:
     image: postgis/postgis:15-3.3-alpine   # Updated to use a PostGIS image
-    env_file:
-      - .env
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
