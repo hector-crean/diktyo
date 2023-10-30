@@ -1,7 +1,6 @@
 use crate::{Random, USER_COOKIE_NAME};
 use bibe_models::{session_token::SessionToken, user::User};
 
-
 use sqlx::{Pool, Postgres};
 
 use uuid::Uuid;

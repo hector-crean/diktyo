@@ -26,7 +26,11 @@ async fn main() -> errors::Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 1690));
+    let port: u16 = 3000;
+
+    ///0.0.0.0: This IP address is a way to specify that the socket should bind to all available network interfaces on
+    /// the host machine. It's a common choice when you want your service to be reachable from outside networks.
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
     tracing::debug!("listening on {}", addr);
 
