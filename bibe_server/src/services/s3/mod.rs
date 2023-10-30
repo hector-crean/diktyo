@@ -128,28 +128,4 @@ pub mod tests {
 
         Ok(bucket)
     }
-
-    #[tokio::test]
-    async fn upload_gltf() -> Result<(), S3Error> {
-        let key: String = rand::thread_rng()
-            .sample_iter(&Alphanumeric)
-            .take(7)
-            .map(char::from)
-            .collect();
-
-        let bucket = bucket_singleton().await?;
-
-        let url = bucket
-            .upload_object(
-                "/Users/hectorcrean/projects/bibe_server/assets/glb/Eye_AMD_Atrophy.glb",
-                format!("{}.glb", &key).as_str(),
-            )
-            .await?;
-
-        println!("{}", url);
-
-        assert_eq!(1, 1);
-
-        Ok(())
-    }
 }
